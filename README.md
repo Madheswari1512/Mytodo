@@ -1,12 +1,12 @@
-# Mytodo
-# Katomaran Todo Task Management Mobile Application
+ Mytodo
+ Katomaran Todo Task Management Mobile Application
 
 A cross-platform **Todo Task Management Mobile App** built for the **Katomaran Hackathon**.  
 This app enables users to **log in with Google** and manage personal tasks with full CRUD operations on the go.
 
 ---
 
-## 🚀 Features
+ Features
 
 ✅ Google authentication for login  
 ✅ Add, view, update, complete, and delete tasks  
@@ -22,7 +22,7 @@ This app enables users to **log in with Google** and manage personal tasks with 
 
 ---
 
-## 🧱 Tech Stack
+Tech Stack
 
 | Layer         | Technology                   |
 |---------------|-------------------------------|
@@ -33,13 +33,13 @@ This app enables users to **log in with Google** and manage personal tasks with 
 
 ---
 
-## 📁 Project Structure
+ Project Structure
 
 ---
 
-## 🛠️ Setup Instructions
+ Setup Instructions
 
-### 1. Clone the Repository
+ 1. Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/katomaran_todo_hackathon.git
@@ -55,11 +55,11 @@ export const firebaseConfig = {
   ...
 };
 npx expo start
-📣 About the Project
+ About the Project
 This project was developed as part of the Katomaran Hackathon organized by katomaran.com.
 It demonstrates modern app development practices with a clean UI/UX, Google login, and task management capabilities.
 
-✨ License
+License
 This project is licensed for educational and hackathon use. Feel free to contribute or fork!
 
 vbnet
@@ -67,20 +67,9 @@ Copy
 Edit
 
 ---
-
-### 🔁 To Use in Your Project:
+ To Use in Your Project:
 1. Copy the entire text above into a new file in your project root: `README.md`
 2. Replace the GitHub link under “Clone the Repository” with your actual repo link.
 3. Make sure your `firebaseConfig.js` file is added to `.gitignore` so secrets aren't exposed.
 
-## 📱 App Screenshots
-
-### ✅ Login Screen
-
-
-### ✅ Task List Screen
-![Task List](assets/screenshots/tasklist.png)
-
-### ✅ Add Task Modal
-![Add Task](assets/screenshots/addtask.png)
 
