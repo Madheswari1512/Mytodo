@@ -72,3 +72,18 @@ Edit
 1. Copy the entire text above into a new file in your project root: `README.md`
 2. Replace the GitHub link under “Clone the Repository” with your actual repo link.
 3. Make sure your `firebaseConfig.js` file is added to `.gitignore` so secrets aren't exposed.
+
+## 📱 App Screenshots
+
+### ✅ Login Screen
+<img width="1920" height="1080" alt="Screenshot 2025-07-25 010710" src="https://github.com/user-attachments/assets/39a72210-d396-4b87-affd-c691a10a11aa" />
+<img width="1920" height="1080" alt="Screenshot 2025-07-25 010710" src="https://github.com/user-attachments/assets/16581b39-4932-4613-ada5-f38f62cf7af4" />
+
+
+
+### ✅ Task List Screen
+![Task List](assets/screenshots/tasklist.png)
+
+### ✅ Add Task Modal
+![Add Task](assets/screenshots/addtask.png)
+
