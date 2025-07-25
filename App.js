@@ -1,18 +1,3 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithCredential, GoogleAuthProvider } from 'firebase/auth';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyB3_NbHXhloa_8gDAaUItibFkWSXwaHNmI",           // ✅ From your Web API key
-  authDomain: "mytodolistapp-5f711.firebaseapp.com",          // ✅ This is your authDomain
-  projectId: "mytodolistapp-5f711",
-  storageBucket: "mytodolistapp-5f711.appspot.com",
-  messagingSenderId: "106563872480",
-  appId: "1:106563872480:web:b4ac30fd562947d3721285"  // 👈 Get this from Firebase Console > Project Settings > General
-};
-
-
-const firebaseApp = initializeApp(firebaseConfig);
-
 import React, { useState, useEffect, createContext, useContext, useRef } from 'react';
 import {
   StyleSheet,
@@ -37,7 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { format, isToday, isPast, addDays } from 'date-fns';
-import { LinearGradient } from 'expo-linear-gradient'; 
+import { LinearGradient } from 'expo-linear-gradient';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -73,7 +58,7 @@ const THEMES = {
 const TaskContext = createContext();
 
 // Google OAuth Config (Replace with your actual client ID)
-const GOOGLE_CLIENT_ID = '106563872480-9ndiilkvcu0p8blq9f09880dnb4s6mvn.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '106563872480-l2ttadtffv8avj8hsj36femjr1fv9dk0.apps.googleusercontent.com';
 
 const App = () => {
   return (
@@ -103,7 +88,7 @@ const TaskProvider = ({ children }) => {
     {
       clientId: GOOGLE_CLIENT_ID,
       scopes: ['openid', 'profile', 'email'],
-      redirectUri: 'https://auth.expo.io/@csbsmadheswari/TodoTaskManager', // ← NEW LINE 80
+      redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     },
     { authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth' }
   );
@@ -113,38 +98,24 @@ const TaskProvider = ({ children }) => {
       handleGoogleAuth(response.authentication.accessToken);
     }
   }, [response]);
-  useEffect(() => {
-  const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
-  console.log('Actual Redirect URI:', redirectUri);
-  Alert.alert('Redirect URI', redirectUri);
-}, []);
 
-const handleGoogleAuth = async (accessToken) => {
-  try {
-    setLoading(true);
-
-    const auth = getAuth(firebaseApp);
-    const credential = GoogleAuthProvider.credential(null, accessToken);
-    const result = await signInWithCredential(auth, credential);
-
-    const firebaseUser = result.user;
-    setUser({
-      given_name: firebaseUser.displayName,
-      email: firebaseUser.email,
-      picture: firebaseUser.photoURL,
-    });
-
-    initializeSampleTasks();
-  } catch (error) {
-    console.error("🔥 Firebase Sign-In Error:", JSON.stringify(error, null, 2));
-
-    Alert.alert("Login Error", "Firebase sign-in failed");
-    handleDemoLogin(); // fallback
-  } finally {
-    setLoading(false);
-  }
-};
-
+  const handleGoogleAuth = async (token) => {
+    try {
+      setLoading(true);
+      const userInfoResponse = await fetch(
+        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${token}`
+      );
+      const userInfo = await userInfoResponse.json();
+      setUser(userInfo);
+      initializeSampleTasks();
+    } catch (error) {
+      Alert.alert('Login Error', 'Failed to authenticate with Google');
+      // Demo fallback
+      handleDemoLogin();
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDemoLogin = () => {
     const demoUser = {
@@ -560,7 +531,7 @@ const EnhancedTaskItem = ({ task }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     if (isToday(date)) return '📅 Today';
-    return 📅 ${format(date, 'MMM dd')};
+    return `📅 ${format(date, 'MMM dd')}`;
   };
 
   const getPriorityColor = (priority) => {
@@ -628,7 +599,7 @@ const EnhancedTaskItem = ({ task }) => {
             <View style={styles.taskMeta}>
               <Text style={[styles.taskDate, isOverdue && styles.taskDateOverdue]}>
                 {formatDate(task.dueDate)}
-                {isOverdue && ' ⚠'}
+                {isOverdue && ' ⚠️'}
               </Text>
               <LinearGradient
                 colors={getPriorityColor(task.priority)}
@@ -685,12 +656,12 @@ const EnhancedEmptyState = () => {
       <LinearGradient colors={THEMES.gradient6} style={styles.emptyCard}>
         <Ionicons name="checkmark-done-circle" size={80} color="#667eea" />
         <Text style={styles.emptyTitle}>
-          {filter === 'all' ? '🎉 All Set!' : No ${filter} tasks}
+          {filter === 'all' ? '🎉 All Set!' : `No ${filter} tasks`}
         </Text>
         <Text style={styles.emptySubtitle}>
           {filter === 'all' 
             ? 'Ready to conquer your day? Add your first task!'
-            : Great job! No ${filter} tasks to worry about.
+            : `Great job! No ${filter} tasks to worry about.`
           }
         </Text>
       </LinearGradient>
